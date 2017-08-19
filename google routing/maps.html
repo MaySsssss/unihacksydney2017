@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 80%;
+        margin: 40px 150px 0px 60px;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+
+    Latitude <input type="number" id="latitude" value="-34.39">
+    Longitude <input type="number" id="longitude" value="190.64">
+
+    <button onclick="initMap()">Locate</button>
+
+    <p id="demo1"></p>
+    <p id="demo2"></p>
+
+    <script>
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: -34.397, lng: 150.644},
+          zoom: 12
+        });
+
+        var x = document.getElementById("latitude").value;
+        document.getElementById("demo1").innerHTML = x;
+        var y = document.getElementById("longitude").value;
+        document.getElementById("demo2").innerHTML = y;
+
+        console.log(x, y)
+        // Get the current geolocation.
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+
+            if(y > 180){
+              x= position.coords.latitude,
+              y= position.coords.longitude
+            }
+
+            var marker = new google.maps.Marker({
+              position: pos,
+              map: map
+            });
+
+            var pos2 = {
+              lat: parseFloat(x),
+              lng: parseFloat(y)
+            }
+            var marker = new google.maps.Marker({
+              position: pos2,
+              map: map
+            });
+            map.setCenter(pos2);
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
+      }
+
+
+
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCsbzdeqT1I_hc4NyVDcHmhoxMV5tgoVBE&callback=initMap"
+    async defer></script>
+
+  </body>
+
+</html>
